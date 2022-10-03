@@ -19,14 +19,14 @@ func Response(data interface{}, message string, status bool) response {
 	return result
 }
 
-func ResponseCamelCase(data interface{}, message string, status bool) (string, []byte) {
+func ResponseCamelCase(statusCode int, data interface{}, message string) (int, string, []byte) {
 	result := response{}
 	result.Message = message
 	result.Data = data
-	result.IsOk = status
+	result.IsOk = statusCode < 300 && statusCode >= 200
 	bytes, _ := json.Marshal(result)
 
-	return "application/json", convertKeys(json.RawMessage(bytes))
+	return statusCode, "application/json", convertKeys(json.RawMessage(bytes))
 }
 
 func convertKeys(j json.RawMessage) json.RawMessage {
