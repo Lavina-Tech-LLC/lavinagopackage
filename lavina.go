@@ -31,8 +31,13 @@ func ResponseCamelCase(statusCode int, data interface{}, message string) (int, s
 
 func convertKeys(j json.RawMessage) json.RawMessage {
 	m := make(map[string]json.RawMessage)
+	a := make([]map[string]json.RawMessage)
 	if err := json.Unmarshal([]byte(j), &m); err != nil {
 		// Not a JSON object
+		return j
+	}
+	if err := json.Unmarshal([]byte(j), &a); err != nil {
+		// Not a JSON array object
 		return j
 	}
 
