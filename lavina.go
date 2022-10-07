@@ -51,5 +51,5 @@ func convertKeys(j json.RawMessage) json.RawMessage {
 }
 
 func fixKey(key string) string {
-	return strings.ToUpper(key)
+	return strings.ToLower(key[:1]) + key[1:]
 }
