@@ -62,3 +62,12 @@ func convertKeys(j json.RawMessage) json.RawMessage {
 func fixKey(key string) string {
 	return strings.ToLower(key[:1]) + key[1:]
 }
+
+func Marshal(data any) ([]byte, error) {
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return bytes, err
+	}
+
+	return convertKeys(json.RawMessage(bytes)), nil
+}
