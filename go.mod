@@ -1,5 +1,3 @@
-module github.com/Lavina-Tech-LLC/lavinagopackage
+module github.com/Lavina-Tech-LLC/lavinagopackage/v2
 
 go 1.18
-
-require github.com/graniticio/granitic v1.3.0 // indirect
