@@ -1,9 +1,28 @@
 package lvn
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
-func Ternary(condition bool, ifTrue, ifFalse any) any {
-	if condition {
+type Nullable interface {
+	bool | int | string
+}
+
+func isNull[T Nullable](n T) bool {
+	switch any(n).(type) {
+	case bool:
+		return !any(n).(bool)
+	case int:
+		return any(n).(int) == 0
+	case string:
+		return any(n).(string) == ""
+	default:
+		return false
+	}
+}
+
+func Ternary[T any, N Nullable](condition N, ifTrue, ifFalse T) T {
+	if !isNull(condition) {
 		return ifTrue
 	} else {
 		return ifFalse
