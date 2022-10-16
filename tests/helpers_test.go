@@ -12,8 +12,14 @@ func TestTernary(t *testing.T) {
 	if k != 0 {
 		t.Errorf("Res was incorrect, got: %d, want: %d.", k, 0)
 	}
-	i := lvn.Ternary(0, 0, 1)
-	if i != 1 {
-		t.Errorf("Res was incorrect, got: %d, want: %d.", i, 1)
+	k = lvn.Ternary(0, 0, 1)
+	if k != 1 {
+		t.Errorf("Res was incorrect, got: %d, want: %d.", k, 1)
 	}
+
+	k = lvn.Ternary("", 0, 1)
+	if k != 1 {
+		t.Errorf("Res was incorrect, got: %d, want: %d.", k, 1)
+	}
+
 }
