@@ -2,6 +2,7 @@ package lvn
 
 import (
 	"encoding/json"
+	"reflect"
 )
 
 type Nullable interface {
@@ -37,4 +38,14 @@ func Marshal(data any) ([]byte, error) {
 	}
 
 	return convertKeys(json.RawMessage(bytes)), nil
+}
+
+func GetValue[T any](object any, fieldNames ...string) T {
+	obj := object
+	for _, fn := range fieldNames {
+		r := reflect.ValueOf(obj)
+		val := reflect.Indirect(r).FieldByName(fn)
+		obj = val.Interface()
+	}
+	return obj.(T)
 }
