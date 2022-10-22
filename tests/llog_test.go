@@ -3,17 +3,17 @@ package tests
 import (
 	"testing"
 
-	"github.com/Lavina-Tech-LLC/lavinagopackage/v2/llog"
+	"github.com/Lavina-Tech-LLC/lavinagopackage/v2/logger"
 )
 
 func testLlog(t *testing.T) {
-	logger := llog.New(true)
-	logger.Use(func(l *llog.Log) {
+	lggr := logger.New(true)
+	lggr.Use(func(l *logger.Log) {
 		l.Message = "MIDDLEWARE > " + l.Message
-		if l.Level == llog.Critical {
+		if l.Level == logger.Critical {
 			l.Message = "****** critical ******\n" + l.Message
 		}
 	})
 
-	logger.Infof("This is info %s", llog.Info)
+	lggr.Infof("This is info %s", logger.Info)
 }

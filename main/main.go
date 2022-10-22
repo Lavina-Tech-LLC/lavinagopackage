@@ -3,25 +3,25 @@ package main
 import (
 	"fmt"
 
-	"github.com/Lavina-Tech-LLC/lavinagopackage/v2/llog"
+	"github.com/Lavina-Tech-LLC/lavinagopackage/v2/logger"
 )
 
 func main() {
-	logger := llog.New(true)
-	logger.Use(func(l *llog.Log) {
+	lggr := logger.New(true)
+	lggr.Use(func(l *logger.Log) {
 		fmt.Println("MIDDLEWARE > " + l.Message)
-		if l.Level == llog.Critical {
+		if l.Level == logger.Critical {
 			l.Message = "****** critical ******\n" + l.Message
 		}
 	})
 
-	logger.Infof("This is info %s", llog.Info)
-	logger.Debugf("This is debug")
-	logger.Warningf("This is warning")
-	logger.Noticef("This is notice")
-	logger.Errorf("This is error")
-	logger.Criticalf("This is critical")
+	lggr.Infof("This is info %s", logger.Info)
+	lggr.Debugf("This is debug")
+	lggr.Warningf("This is warning")
+	lggr.Noticef("This is notice")
+	lggr.Errorf("This is error")
+	lggr.Criticalf("This is critical")
 
-	logger.Info(logger)
+	lggr.Info(lggr)
 
 }
