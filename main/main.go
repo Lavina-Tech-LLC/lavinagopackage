@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	logger := llog.New(false)
+	logger := llog.New(true)
 	logger.Use(func(l *llog.Log) {
 		fmt.Println("MIDDLEWARE > " + l.Message)
 		if l.Level == llog.Critical {
