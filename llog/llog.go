@@ -75,6 +75,13 @@ func (l *Logger) logf(level logLevel, format string, a ...any) {
 	})
 }
 
+func (l *Logger) log(level logLevel, a ...any) {
+	l.Log(&Log{
+		Level:   level,
+		Message: fmt.Sprintf("%s", fmt.Sprint(a...)),
+	})
+}
+
 func (l *Logger) Infof(format string, a ...any) {
 	l.logf(Info, format, a...)
 }
@@ -92,4 +99,23 @@ func (l *Logger) Errorf(format string, a ...any) {
 }
 func (l *Logger) Criticalf(format string, a ...any) {
 	l.logf(Critical, format, a...)
+}
+
+func (l *Logger) Info(a ...any) {
+	l.log(Info, fmt.Sprint(a...))
+}
+func (l *Logger) Notice(a ...any) {
+	l.log(Notice, fmt.Sprint(a...))
+}
+func (l *Logger) Debug(a ...any) {
+	l.log(Debug, fmt.Sprint(a...))
+}
+func (l *Logger) Warning(a ...any) {
+	l.log(Warning, fmt.Sprint(a...))
+}
+func (l *Logger) Error(a ...any) {
+	l.log(Error, fmt.Sprint(a...))
+}
+func (l *Logger) Critical(a ...any) {
+	l.log(Critical, fmt.Sprint(a...))
 }

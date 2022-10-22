@@ -22,4 +22,6 @@ func main() {
 	logger.Errorf("This is error")
 	logger.Criticalf("This is critical")
 
+	logger.Info(logger)
+
 }
