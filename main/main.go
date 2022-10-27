@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	lvn "github.com/Lavina-Tech-LLC/lavinagopackage/v2"
 	"github.com/Lavina-Tech-LLC/lavinagopackage/v2/logger"
 )
 
@@ -23,5 +24,7 @@ func main() {
 	lggr.Criticalf("This is critical")
 
 	lggr.Info(lggr)
+
+	lvn.Logger.Critical("This is critical")
 
 }

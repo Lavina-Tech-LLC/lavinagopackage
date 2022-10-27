@@ -38,12 +38,12 @@ func (l logLevel) String() string {
 
 func (l logLevel) getFormat() string {
 	return []string{
-		"\033[1;34m[INFO]\033[0m %s\n",
-		"\033[1;36m[NOTICE]\033[0m %s\n",
-		"\033[1;36m[DEBUG]\033[0m %s\n",
+		"\033[1;34m[INFO]\033[0m 	%s\n",
+		"\033[1;36m[NOTICE]\033[0m 	%s\n",
+		"\033[1;36m[DEBUG]\033[0m 	%s\n",
 		"\033[1;33m[WARNING]\033[0m %s\n",
-		"\033[1;31m[ERROR]\033[0m %s\n",
-		"\033[0;31m[CRITICAL]\033[0m %s\n",
+		"\033[1;31m[ERROR]\033[0m 	%s\n",
+		"\033[0;31m[CRITIC]\033[0m 	%s\n",
 	}[l]
 }
 
