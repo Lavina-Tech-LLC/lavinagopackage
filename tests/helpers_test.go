@@ -6,25 +6,34 @@ import (
 	lvn "github.com/Lavina-Tech-LLC/lavinagopackage/v2"
 )
 
+type ()
+
 func TestTernary(t *testing.T) {
 
-	k := lvn.Ternary(true, 0, 1)
-	if k != 0 {
-		t.Errorf("Res was incorrect, got: %d, want: %d.", k, 0)
-	}
-	k = lvn.Ternary(0, 0, 1)
-	if k != 1 {
-		t.Errorf("Res was incorrect, got: %d, want: %d.", k, 1)
+	res := []testsRes[int]{
+		{
+			Out:  lvn.Ternary(true, 0, 1),
+			Want: 0,
+			Test: "Ternary with bool",
+		},
+		{
+			Out:  lvn.Ternary(0, 0, 1),
+			Want: 1,
+			Test: "Ternary with int",
+		},
+		{
+			Out:  lvn.Ternary("", 0, 1),
+			Want: 1,
+			Test: "Ternary with string",
+		},
 	}
 
-	k = lvn.Ternary("", 0, 1)
-	if k != 1 {
-		t.Errorf("Res was incorrect, got: %d, want: %d.", k, 1)
-	}
+	check(res, t)
 
 }
 
 func TestGetValue(t *testing.T) {
+
 	type nest2Type struct {
 		StringField string
 	}
@@ -59,28 +68,27 @@ func TestGetValue(t *testing.T) {
 		},
 	}
 
-	have := lvn.GetValue[string](val, "StringField")
-	want := val.StringField
-	if have != want {
-		t.Errorf("Res was incorrect, got: %s, want: %s.", have, want)
+	res := []testsRes[string]{
+		{
+			Out:  lvn.GetValue[string](val, "StringField"),
+			Want: val.StringField,
+			Test: "GetValue 1st Level",
+		},
+		{
+			Out:  lvn.GetValue[string](val, "Nest", "StringField"),
+			Want: val.Nest.StringField,
+			Test: "GetValue 1st nest",
+		},
+		{
+			Out:  lvn.GetValue[[]string](val, "Nest", "ArrayField")[0],
+			Want: val.Nest.ArrayField[0],
+			Test: "GetValue array",
+		},
+		{
+			Out:  lvn.GetValue[string](val, "Nest", "Nest2", "StringField"),
+			Want: val.Nest.Nest2.StringField,
+			Test: "GetValue 2nd nest",
+		},
 	}
-
-	have = lvn.GetValue[string](val, "Nest", "StringField")
-	want = val.Nest.StringField
-	if have != want {
-		t.Errorf("Res was incorrect, got: %s, want: %s.", have, want)
-	}
-
-	have = lvn.GetValue[[]string](val, "Nest", "ArrayField")[0]
-	want = val.Nest.ArrayField[0]
-	if have != want {
-		t.Errorf("Res was incorrect, got: %s, want: %s.", have, want)
-	}
-
-	have = lvn.GetValue[string](val, "Nest", "Nest2", "StringField")
-	want = val.Nest.Nest2.StringField
-	if have != want {
-		t.Errorf("Res was incorrect, got: %s, want: %s.", have, want)
-	}
-
+	check(res, t)
 }
