@@ -27,7 +27,6 @@ func TestTernary(t *testing.T) {
 			Test: "Ternary with string",
 		},
 	}
-
 	check(res, t)
 
 }
