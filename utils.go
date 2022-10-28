@@ -36,7 +36,8 @@ func convertKeys(j json.RawMessage) json.RawMessage {
 }
 
 func fixKey(key string) string {
-	return Ternary(len(key) > 3,
-		strings.ToLower(key[:1])+key[1:],
-		strings.ToLower(key))
+	if strings.ToUpper(key) == key {
+		return strings.ToLower(key)
+	}
+	return strings.ToLower(key[:1]) + key[1:]
 }
