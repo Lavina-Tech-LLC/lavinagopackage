@@ -1,38 +1,42 @@
 package lvn
 
 import (
-	"encoding/json"
 	"strings"
+
+	"github.com/iancoleman/orderedmap"
+	"golang.org/x/exp/slices"
 )
 
-func convertKeys(j json.RawMessage) json.RawMessage {
-	m := make(map[string]json.RawMessage)
-	a := []json.RawMessage{}
-	if err := json.Unmarshal([]byte(j), &a); err == nil {
-		//JSON array object
-		for k, v := range a {
-			a[k] = convertKeys(v)
+func convertKeys(o interface{}, omitKeys, selectKeys []string) interface{} {
+
+	switch t := o.(type) {
+	case orderedmap.OrderedMap:
+		newMap := orderedmap.New()
+		keys := t.Keys()
+		for _, k := range keys {
+			fixed := fixKey(k)
+			v, _ := t.Get(k)
+			// checking selectKeys
+			if len(selectKeys) != 0 && !slices.Contains(selectKeys, fixed) {
+				continue
+			}
+
+			// checking omitKeys
+			if len(omitKeys) != 0 && slices.Contains(omitKeys, fixed) {
+				continue
+			}
+			newMap.Set(fixed, convertKeys(v, omitKeys, selectKeys))
 		}
-		bytes, _ := json.Marshal(a)
-		return json.RawMessage(bytes)
+		return *newMap
+	case []interface{}:
+		newArray := []orderedmap.OrderedMap{}
+		for _, v := range t {
+			newArray = append(newArray, convertKeys(v, omitKeys, selectKeys).(orderedmap.OrderedMap))
+		}
+		return newArray
+	default:
+		return t
 	}
-	if err := json.Unmarshal([]byte(j), &m); err != nil {
-		// Not a JSON object
-		return j
-	}
-
-	for k, v := range m {
-		fixed := fixKey(k)
-		delete(m, k)
-		m[fixed] = convertKeys(v)
-	}
-
-	b, err := json.Marshal(m)
-	if err != nil {
-		return j
-	}
-
-	return json.RawMessage(b)
 }
 
 func fixKey(key string) string {

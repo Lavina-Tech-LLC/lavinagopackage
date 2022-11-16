@@ -3,6 +3,8 @@ package lvn
 import (
 	"encoding/json"
 	"reflect"
+
+	"github.com/iancoleman/orderedmap"
 )
 
 type Nullable interface {
@@ -30,14 +32,30 @@ func Ternary[T any, N Nullable](condition N, ifTrue, ifFalse T) T {
 	}
 }
 
-// Marshals in camelCase
-func Marshal(data any) ([]byte, error) {
+func marshal(data any, omitKeys, selectKeys []string) ([]byte, error) {
 	bytes, err := json.Marshal(data)
 	if err != nil {
 		return bytes, err
 	}
 
-	return convertKeys(json.RawMessage(bytes)), nil
+	o := orderedmap.New()
+
+	err = json.Unmarshal(bytes, &o)
+	if err != nil {
+		return bytes, err
+	}
+
+	newO := convertKeys(*o, omitKeys, selectKeys).(orderedmap.OrderedMap)
+	return json.Marshal(newO)
+}
+
+// Marshals in camelCase
+func Marshal(data any, omitKeys ...string) ([]byte, error) {
+	return marshal(data, omitKeys, []string{})
+}
+
+func MarshalSelected(data any, selectKeys ...string) ([]byte, error) {
+	return marshal(data, []string{}, selectKeys)
 }
 
 func GetValue[T any](object any, fieldNames ...string) T {

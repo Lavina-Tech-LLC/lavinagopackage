@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"encoding/json"
 	"testing"
 
 	lvn "github.com/Lavina-Tech-LLC/lavinagopackage/v2"
@@ -89,5 +90,168 @@ func TestGetValue(t *testing.T) {
 			Test: "GetValue 2nd nest",
 		},
 	}
+	check(res, t)
+}
+
+func TestMarshall(t *testing.T) {
+	type (
+		baseArrayItem struct {
+			A_field1 string
+			A_field2 int
+			A_field3 bool
+		}
+		base struct {
+			Field1 string
+			Field2 string
+			Field3 struct {
+				Field4 int
+				Field5 float64
+			}
+			Array []baseArrayItem
+		}
+
+		ccBaseArrayItem struct {
+			A_field1 string `json:"a_field1"`
+			A_field2 int    `json:"a_field2"`
+			A_field3 bool   `json:"a_field3"`
+		}
+		ccBase struct {
+			Field1 string `json:"field1"`
+			Field2 string `json:"field2"`
+			Field3 struct {
+				Field4 int     `json:"field4"`
+				Field5 float64 `json:"field5"`
+			} `json:"field3"`
+			Array []ccBaseArrayItem `json:"array"`
+		}
+
+		editedArrayItem struct {
+			A_field1 string `json:"a_field1"`
+			A_field3 bool   `json:"a_field3"`
+		}
+		editedBase struct {
+			Field2 string `json:"field2"`
+			Field3 struct {
+				Field4 int `json:"field4"`
+			} `json:"field3"`
+			Array []editedArrayItem `json:"array"`
+		}
+
+		seasonedBase struct {
+			Field2 string `json:"field2"`
+		}
+	)
+
+	Base := base{
+		Field1: "field1",
+		Field2: "field2",
+		Field3: struct {
+			Field4 int
+			Field5 float64
+		}{
+			Field4: 15,
+			Field5: 0.35,
+		},
+		Array: []baseArrayItem{
+			{
+				A_field1: "a_field1",
+				A_field2: 78,
+				A_field3: true,
+			},
+			{
+				A_field1: "a_field12",
+				A_field2: 44,
+				A_field3: false,
+			},
+			{
+				A_field1: "a_field13",
+				A_field2: 9,
+				A_field3: true,
+			},
+		},
+	}
+
+	CCBase := ccBase{
+		Field1: "field1",
+		Field2: "field2",
+		Field3: struct {
+			Field4 int     `json:"field4"`
+			Field5 float64 `json:"field5"`
+		}{
+			Field4: 15,
+			Field5: 0.35,
+		},
+		Array: []ccBaseArrayItem{
+			{
+				A_field1: "a_field1",
+				A_field2: 78,
+				A_field3: true,
+			},
+			{
+				A_field1: "a_field12",
+				A_field2: 44,
+				A_field3: false,
+			},
+			{
+				A_field1: "a_field13",
+				A_field2: 9,
+				A_field3: true,
+			},
+		},
+	}
+
+	EditedBase := editedBase{
+		Field2: "field2",
+		Field3: struct {
+			Field4 int `json:"field4"`
+		}{
+			Field4: 15,
+		},
+		Array: []editedArrayItem{
+			{
+				A_field1: "a_field1",
+				A_field3: true,
+			},
+			{
+				A_field1: "a_field12",
+				A_field3: false,
+			},
+			{
+				A_field1: "a_field13",
+				A_field3: true,
+			},
+		},
+	}
+
+	SeasonedBase := seasonedBase{
+		Field2: "field2",
+	}
+
+	res := []testsRes[string]{}
+
+	got, _ := lvn.Marshal(Base)
+	want, _ := json.Marshal(CCBase)
+	res = append(res, testsRes[string]{
+		Want: string(want),
+		Out:  string(got),
+		Test: "Camel case test",
+	})
+
+	got, _ = lvn.Marshal(Base, "a_field2", "field1", "field5")
+	want, _ = json.Marshal(EditedBase)
+	res = append(res, testsRes[string]{
+		Want: string(want),
+		Out:  string(got),
+		Test: "Omit test",
+	})
+
+	got, _ = lvn.MarshalSelected(Base, "field2")
+	want, _ = json.Marshal(SeasonedBase)
+	res = append(res, testsRes[string]{
+		Want: string(want),
+		Out:  string(got),
+		Test: "Select case test",
+	})
+
 	check(res, t)
 }
