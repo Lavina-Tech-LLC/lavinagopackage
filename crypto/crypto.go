@@ -31,13 +31,13 @@ func Encrypt(data, secret []byte) (string, error) {
 	stream := cipher.NewCFBEncrypter(block, iv)
 	stream.XORKeyStream(cipherText[aes.BlockSize:], data)
 
-	res := base64.RawStdEncoding.EncodeToString(cipherText)
+	res := base64.StdEncoding.EncodeToString(cipherText)
 
 	return res, nil
 }
 
 func Decrypt(encoded string, secret []byte) (plain []byte, err error) {
-	cipherText, err := base64.RawStdEncoding.DecodeString(encoded)
+	cipherText, err := base64.StdEncoding.DecodeString(encoded)
 	if err != nil {
 		return
 	}
