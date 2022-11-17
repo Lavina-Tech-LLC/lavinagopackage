@@ -23,6 +23,7 @@ const (
 	Warning
 	Error
 	Critical
+	Panic
 )
 
 func (l logLevel) String() string {
@@ -33,6 +34,7 @@ func (l logLevel) String() string {
 		"Warning",
 		"Error",
 		"Critical",
+		"Panic",
 	}[l]
 }
 
@@ -43,6 +45,7 @@ func (l logLevel) getFormat() string {
 		"\033[1;36m[DEBUG]\033[0m 	%s\n",
 		"\033[1;33m[WARNING]\033[0m %s\n",
 		"\033[1;31m[ERROR]\033[0m 	%s\n",
+		"\033[0;31m[CRITIC]\033[0m 	%s\n",
 		"\033[0;31m[CRITIC]\033[0m 	%s\n",
 	}[l]
 }
@@ -66,6 +69,9 @@ func (l *Logger) Log(log *Log) {
 	}
 
 	fmt.Printf(log.Level.getFormat(), log.Message)
+	if log.Level == Panic {
+		panic(log.Message)
+	}
 }
 
 func (l *Logger) logf(level logLevel, format string, a ...any) {
@@ -100,6 +106,9 @@ func (l *Logger) Errorf(format string, a ...any) {
 func (l *Logger) Criticalf(format string, a ...any) {
 	l.logf(Critical, format, a...)
 }
+func (l *Logger) Panicf(format string, a ...any) {
+	l.logf(Panic, format, a...)
+}
 
 func (l *Logger) Info(a ...any) {
 	l.log(Info, fmt.Sprint(a...))
@@ -118,4 +127,7 @@ func (l *Logger) Error(a ...any) {
 }
 func (l *Logger) Critical(a ...any) {
 	l.log(Critical, fmt.Sprint(a...))
+}
+func (l *Logger) Panic(a ...any) {
+	l.log(Panic, fmt.Sprint(a...))
 }
