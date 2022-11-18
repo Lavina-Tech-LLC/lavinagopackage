@@ -10,11 +10,11 @@ func TestEncryptDecrypt(t *testing.T) {
 
 	secret := "MyCipherSecret"
 	plainText := "Hello world"
-	cipherText, err := crypto.Encrypt([]byte(plainText), []byte(secret))
+	cipherText, err := crypto.Encrypt(plainText, (secret))
 	if err != nil {
 		panic(err)
 	}
-	decipherText, err := crypto.Decrypt(cipherText, []byte(secret))
+	decipherText, err := crypto.Decrypt(cipherText, secret)
 	if err != nil {
 		panic(err)
 	}
