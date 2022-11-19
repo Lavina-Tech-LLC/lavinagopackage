@@ -29,9 +29,9 @@ func convertKeys(o interface{}, omitKeys, selectKeys []string) interface{} {
 		}
 		return *newMap
 	case []interface{}:
-		newArray := []orderedmap.OrderedMap{}
+		newArray := []interface{}{}
 		for _, v := range t {
-			newArray = append(newArray, convertKeys(v, omitKeys, selectKeys).(orderedmap.OrderedMap))
+			newArray = append(newArray, convertKeys(v, omitKeys, selectKeys))
 		}
 		return newArray
 	default:
