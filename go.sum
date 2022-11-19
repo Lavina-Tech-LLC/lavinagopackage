@@ -1,3 +1,5 @@
+github.com/Lavina-Tech-LLC/lavina-utils v0.0.0-20220321054434-b65aa29b2f31 h1:R1S5K2qQLwAigeQS9kp2mVe3lbA+GFH+Ff873O1ZmUM=
+github.com/Lavina-Tech-LLC/lavina-utils v0.0.0-20220321054434-b65aa29b2f31/go.mod h1:/J4OVqNAe8bzzWFVt2LL+BJT05FBJBeguvIolm9euEo=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

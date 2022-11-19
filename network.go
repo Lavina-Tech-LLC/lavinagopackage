@@ -1,6 +1,12 @@
 package lvn
 
-import "github.com/gin-gonic/gin"
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"io/ioutil"
+
+	"github.com/gin-gonic/gin"
+)
 
 type response struct {
 	Data    interface{} `json:"data"`
@@ -42,4 +48,23 @@ func res(statusCode int, data interface{}, message string, omitKeys, selectKeys 
 	bytes, _ := marshal(result, omitKeys, selectKeys)
 
 	return statusCode, "application/json", bytes
+}
+
+func GetSign(c *gin.Context, secret string) (string, error) {
+	signStr := c.Request.URL.Path + Ternary(c.Request.URL.RawQuery, "?"+c.Request.URL.RawQuery, "")
+
+	if c.Request.Method != "GET" {
+		body, err := ioutil.ReadAll(c.Request.Body)
+		if err != nil {
+			return "", err
+		}
+		signStr += string(body)
+		c.Set("body", body)
+	}
+
+	signStr += secret
+
+	sign := md5.Sum([]byte(signStr))
+
+	return hex.EncodeToString(sign[:]), nil
 }
