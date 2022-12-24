@@ -2,7 +2,11 @@ package lvn
 
 import (
 	"encoding/json"
+	"fmt"
+	"os"
+	"os/signal"
 	"reflect"
+	"syscall"
 
 	"github.com/iancoleman/orderedmap"
 )
@@ -66,4 +70,11 @@ func GetValue[T any](object any, fieldNames ...string) T {
 		obj = val.Interface()
 	}
 	return obj.(T)
+}
+
+func WaitExitSignal() {
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	fmt.Println("Shuting down Server ...")
 }
