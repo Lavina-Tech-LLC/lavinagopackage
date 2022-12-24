@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"math/rand"
 	"testing"
 
 	"github.com/Lavina-Tech-LLC/lavinagopackage/v2/conf"
@@ -22,15 +23,22 @@ func TestConf(t *testing.T) {
 
 	config := confType{
 		Field1: "Hello world",
-		Field2: 13,
+		Field2: rand.Intn(1000),
 	}
-
+	confBeforeLoad := conf.Get[confType]()
 	conf.Load[confType]()
-	conf.Set(config)
+
 	res := []testsRes[confType]{
 		{Out: conf.Get[confType](),
-			Want: config,
+			Want: confBeforeLoad,
 			Test: "Config set and get"},
 	}
+
+	conf.Set(config)
+	res = append(res, testsRes[confType]{
+		Out:  conf.Get[confType](),
+		Want: config,
+		Test: "Config set and get"},
+	)
 	check(res, t)
 }

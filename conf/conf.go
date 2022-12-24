@@ -44,6 +44,9 @@ func Load[T any]() T {
 }
 
 func Get[T any]() T {
+	if config == nil {
+		Load[T]()
+	}
 	return config.(configT[T]).Data
 }
 
