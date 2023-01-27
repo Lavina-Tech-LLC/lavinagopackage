@@ -89,18 +89,20 @@ func GetPath(args ...any) string {
 	if len(args) > 0 {
 		up = args[0].(int)
 	}
+	d := string(rune(os.PathSeparator))
 
 	path, _ := os.Executable()
-	if strings.LastIndex(path, "/") < 0 {
-		return path
-	}
+	// if strings.LastIndex(path, d) < 0 {
+	// 	return path
+	// }
 
-	path = path[:strings.LastIndex(path, "/")]
+	path = path[:strings.LastIndex(path, d)]
 
-	regRes := regexp.MustCompile(`\/[^\/]+$`)
+	pattern := fmt.Sprintf(`%s[^%s]+$`, d, d)
+	regRes := regexp.MustCompile(pattern)
 
 	for i := 0; i < up; i++ {
 		path = regRes.ReplaceAllString(path, "")
 	}
-	return path + "/"
+	return path + d
 }
