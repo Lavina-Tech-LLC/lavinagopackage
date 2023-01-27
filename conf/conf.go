@@ -91,6 +91,10 @@ func GetPath(args ...any) string {
 	}
 
 	path, _ := os.Executable()
+	if strings.LastIndex(path, "/") < 0 {
+		return path
+	}
+
 	path = path[:strings.LastIndex(path, "/")]
 
 	regRes := regexp.MustCompile(`\/[^\/]+$`)
