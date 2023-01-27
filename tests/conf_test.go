@@ -25,8 +25,8 @@ func TestConf(t *testing.T) {
 		Field1: "Hello world",
 		Field2: rand.Intn(1000),
 	}
-	confBeforeLoad := conf.Get[confType]()
-	conf.Load[confType]()
+	confBeforeLoad := conf.Get[confType]("")
+	conf.Load[confType]("")
 
 	res := []testsRes[confType]{
 		{Out: conf.Get[confType](),
@@ -41,4 +41,32 @@ func TestConf(t *testing.T) {
 		Test: "Config set and get"},
 	)
 	check(res, t)
+}
+
+func TestGetPath(t *testing.T) {
+	path := "/Volumes/drive/GitHub/lavinagopackage/tests/"
+	pathUp1 := "/Volumes/drive/GitHub/lavinagopackage/"
+	pathUp2 := "/Volumes/drive/GitHub/"
+
+	res := []testsRes[string]{
+		{
+			Out:  conf.GetPath(),
+			Want: path,
+			Test: "Up 0",
+		},
+	}
+	res = append(res,
+		testsRes[string]{
+			Out:  conf.GetPath(1),
+			Want: pathUp1,
+			Test: "Up 1",
+		},
+		testsRes[string]{
+			Out:  conf.GetPath(2),
+			Want: pathUp2,
+			Test: "Up 2",
+		},
+	)
+	check(res, t)
+
 }
