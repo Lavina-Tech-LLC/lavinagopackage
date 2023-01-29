@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 
@@ -69,4 +70,16 @@ func TestGetPath(t *testing.T) {
 	)
 	check(res, t)
 
+}
+
+func TestUpperConf(t *testing.T) {
+	type (
+		confType struct {
+			Field1 string
+			Field2 int
+		}
+	)
+
+	config := conf.Load[confType]("../conf/")
+	fmt.Println(config)
 }

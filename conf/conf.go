@@ -28,14 +28,16 @@ func Load[T any](args ...string) T {
 		path = GetPath() + "config.json"
 	} else {
 		path = args[0]
-		reg := regexp.MustCompile("../")
+		reg := regexp.MustCompile(`\.\.\/`)
 		matches := reg.FindAllStringIndex(path, -1)
 		path = reg.ReplaceAllString(path, "")
 
 		path = GetPath(len(matches)) + path + "config.json"
 	}
 
-	c := configT[T]{}
+	c := configT[T]{
+		Path: path,
+	}
 	data, err := os.ReadFile(path)
 
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
@@ -43,6 +45,7 @@ func Load[T any](args ...string) T {
 	}
 	if err != nil && errors.Is(err, os.ErrNotExist) {
 		lvn.Logger.Error("file not found, creating new: %s", err, path)
+		config = c
 		saveConf[T]()
 		return c.Data
 	}
