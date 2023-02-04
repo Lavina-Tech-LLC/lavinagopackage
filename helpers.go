@@ -11,24 +11,22 @@ import (
 	"github.com/iancoleman/orderedmap"
 )
 
-type Nullable interface {
-	bool | int | string
-}
-
-func isNull[T Nullable](n T) bool {
+func isNull[T any](n T) bool {
 	switch any(n).(type) {
 	case bool:
 		return !any(n).(bool)
-	case int:
-		return any(n).(int) == 0
+	case int, int64, int32:
+		return any(n).(int64) == 0
+	case float32, float64:
+		return any(n).(float64) == 0
 	case string:
 		return any(n).(string) == ""
 	default:
-		return false
+		return any(n) == nil
 	}
 }
 
-func Ternary[T any, N Nullable](condition N, ifTrue, ifFalse T) T {
+func Ternary[T any, N any](condition N, ifTrue, ifFalse T) T {
 	if !isNull(condition) {
 		return ifTrue
 	} else {
