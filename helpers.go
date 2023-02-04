@@ -15,14 +15,20 @@ func isNull[T any](n T) bool {
 	switch any(n).(type) {
 	case bool:
 		return !any(n).(bool)
-	case int, int64, int32:
+	case int:
+		return any(n).(int) == 0
+	case int32:
+		return any(n).(int32) == 0
+	case int64:
 		return any(n).(int64) == 0
-	case float32, float64:
+	case float32:
+		return any(n).(float32) == 0
+	case float64:
 		return any(n).(float64) == 0
 	case string:
 		return any(n).(string) == ""
 	default:
-		return any(n) == nil
+		return any(n) == nil || reflect.ValueOf(n).IsNil()
 	}
 }
 

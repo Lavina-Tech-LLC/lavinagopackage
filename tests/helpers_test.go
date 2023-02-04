@@ -10,7 +10,7 @@ import (
 type ()
 
 func TestTernary(t *testing.T) {
-
+	var nilArray []string
 	res := []testsRes[int]{
 		{
 			Out:  lvn.Ternary(true, 0, 1),
@@ -26,6 +26,16 @@ func TestTernary(t *testing.T) {
 			Out:  lvn.Ternary("", 0, 1),
 			Want: 1,
 			Test: "Ternary with string",
+		},
+		{
+			Out:  lvn.Ternary(nilArray, 0, 1),
+			Want: 1,
+			Test: "Ternary with nil array",
+		},
+		{
+			Out:  lvn.Ternary([]string{}, 0, 1),
+			Want: 0,
+			Test: "Ternary with array",
 		},
 	}
 	check(res, t)
