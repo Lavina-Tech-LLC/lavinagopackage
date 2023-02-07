@@ -3,9 +3,9 @@ module github.com/Lavina-Tech-LLC/lavinagopackage/v2
 go 1.18
 
 require (
-	github.com/Lavina-Tech-LLC/lavina-utils v0.0.0-20220321054434-b65aa29b2f31
 	github.com/gin-gonic/gin v1.8.1
 	github.com/iancoleman/orderedmap v0.2.0
+	github.com/joho/godotenv v1.5.1
 	golang.org/x/exp v0.0.0-20221114191408-850992195362
 )
 
