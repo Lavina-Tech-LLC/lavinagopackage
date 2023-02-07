@@ -24,6 +24,10 @@ func init() {
 	key = os.Getenv("KEY")
 	secret = os.Getenv("SECRET")
 	phone = os.Getenv("PHONE")
+	msg := os.Getenv("MESSAGE")
+	if msg != "" {
+		message = msg
+	}
 
 }
 
@@ -56,8 +60,8 @@ func TestSend(t *testing.T) {
 }
 
 func TestVerify(t *testing.T) {
-	id := 206494
-	code := "632517"
+	id := 206504
+	code := "805"
 
 	success, err := sms.VerifyCode(id, code, key, secret)
 

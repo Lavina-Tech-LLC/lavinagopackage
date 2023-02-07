@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 )
 
 const (
@@ -15,6 +16,7 @@ const (
 )
 
 func SendCode(text, phoneNumber, key, secret string, codeLength int) (id int, err error) {
+	phoneNumber = strings.Replace(phoneNumber, "+", "", -1)
 	body := struct {
 		Number string
 		Length int
