@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"time"
 )
 
 type (
@@ -130,4 +131,8 @@ func (l *Logger) Critical(a ...any) {
 }
 func (l *Logger) Panic(a ...any) {
 	l.log(Panic, fmt.Sprint(a...))
+}
+
+func Timestamper(log *Log) {
+	log.Message = fmt.Sprintf("[%s] %s", time.Now().Format("2006-01-02 15:04:05"), log.Message)
 }
