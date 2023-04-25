@@ -32,6 +32,7 @@ func GinErr(c *gin.Context, statusCode int, err error, message string) {
 	if err != nil {
 		c.Data(Res(statusCode, err.Error(), message))
 		c.Abort()
+		Logger.Error(err.Error())
 		panic("lvn.GinErr panic")
 	}
 }
