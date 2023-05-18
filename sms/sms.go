@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	host = "https://tools.lavina.uz:8080"
+	host = "https://tools.lavina.tech"
 )
 
 func SendCode(text, phoneNumber, key, secret string, codeLength int) (id int, err error) {
