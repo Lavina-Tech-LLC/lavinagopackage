@@ -57,6 +57,10 @@ func New(debugMode bool) Logger {
 	}
 }
 
+func (l *Logger) SetDebugMode(mode bool) {
+	l.debugMode = mode
+}
+
 func (l *Logger) Use(f func(*Log)) {
 	l.middles = append(l.middles, f)
 }
