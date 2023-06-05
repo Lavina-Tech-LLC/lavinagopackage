@@ -21,7 +21,6 @@ type (
 var config interface{}
 
 // loads "config.json" in the main directory and returns it value of type T
-
 func Load[T any](args ...string) T {
 	path := ""
 	if len(args) == 0 || args[0] == "" {
@@ -34,6 +33,39 @@ func Load[T any](args ...string) T {
 
 		path = GetPath(len(matches)) + path + "config.json"
 	}
+
+	c := configT[T]{
+		Path: path,
+	}
+	data, err := os.ReadFile(path)
+
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		lvn.Logger.Panicf("Error while reading file: %s, looking for file: %s", err, path)
+	}
+
+	if err != nil && errors.Is(err, os.ErrNotExist) {
+		lvn.Logger.Error("file not found, creating new: %s", err, path)
+		saveConf[T]()
+		return c.Data
+	}
+
+	err = json.Unmarshal(data, &c.Data)
+	if err != nil {
+		lvn.Logger.Panicf("Error while parsing config: %s, file is:", err, path)
+	}
+	c.Path = path
+	config = c
+	saveConf[T]()
+	return c.Data
+}
+
+// Reads json file and returns it value of type T
+func LoadFile[T any](path string) T {
+	reg := regexp.MustCompile(`\.\.\/`)
+	matches := reg.FindAllStringIndex(path, -1)
+	path = reg.ReplaceAllString(path, "")
+
+	path = GetPath(len(matches)) + path
 
 	c := configT[T]{
 		Path: path,
