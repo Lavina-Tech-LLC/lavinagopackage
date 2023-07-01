@@ -8,6 +8,10 @@ func Time(t time.Time) lvnTime {
 	return lvnTime(t)
 }
 
+func TimeInTashkent() time.Time {
+	return time.Now().In(time.FixedZone("Tashkent", 5*60*60))
+}
+
 // returns start of the day in the time's location
 func (lt lvnTime) StartOfTheDay() time.Time {
 	t := time.Time(lt)
