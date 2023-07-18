@@ -54,6 +54,20 @@ func (lt lvnTime) EndOfTheMonth() time.Time {
 	return time.Date(year, month+1, 0, 23, 59, 59, 0, t.Location())
 }
 
+// returns start of the month in the time's location
+func (lt lvnTime) StartOfTheQuarter() time.Time {
+	t := time.Time(lt)
+	year, month, _ := t.Date()
+	return time.Date(year, month-month%3+1, 1, 0, 0, 0, 0, t.Location())
+}
+
+// returns end of the month, without nanoseconds (23:59:59.000)
+func (lt lvnTime) EndOfTheQuarter() time.Time {
+	t := time.Time(lt)
+	year, month, _ := t.Date()
+	return time.Date(year, month-month%3+4, 0, 23, 59, 59, 0, t.Location())
+}
+
 // returns start of the year in the time's location
 func (lt lvnTime) StartOfTheYear() time.Time {
 	t := time.Time(lt)

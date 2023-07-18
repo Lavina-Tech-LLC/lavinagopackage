@@ -35,6 +35,13 @@ func TestTime(t *testing.T) {
 		"2006-01-02T15:04:05-0700",
 		"2022-04-30T23:59:59-0700")
 
+	startOfQuarter, _ := time.Parse(
+		"2006-01-02T15:04:05-0700",
+		"2022-04-01T00:00:00-0700")
+	endOfQuarter, _ := time.Parse(
+		"2006-01-02T15:04:05-0700",
+		"2022-06-30T23:59:59-0700")
+
 	startOfYear, _ := time.Parse(
 		"2006-01-02T15:04:05-0700",
 		"2022-01-01T00:00:00-0700")
@@ -74,6 +81,16 @@ func TestTime(t *testing.T) {
 			Out:  input.EndOfTheMonth(),
 			Want: endOfMonth,
 			Test: "EndOfTheMonth",
+		},
+		{
+			Out:  input.StartOfTheQuarter(),
+			Want: startOfQuarter,
+			Test: "StartOfTheQuarter",
+		},
+		{
+			Out:  input.EndOfTheQuarter(),
+			Want: endOfQuarter,
+			Test: "EndOfTheQuarter",
 		},
 		{
 			Out:  input.StartOfTheYear(),
