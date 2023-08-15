@@ -45,6 +45,7 @@ func Load[T any](args ...string) T {
 
 	if err != nil && errors.Is(err, os.ErrNotExist) {
 		lvn.Logger.Error("file not found, creating new: %s", err, path)
+		config = c
 		saveConf[T]()
 		return c.Data
 	}
