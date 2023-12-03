@@ -20,7 +20,7 @@ var (
 )
 
 func init() {
-	godotenv.Load(conf.GetPath() + "/sms.env")
+	godotenv.Load(conf.GetPath() + "/.env")
 	key = os.Getenv("KEY")
 	secret = os.Getenv("SECRET")
 	phone = os.Getenv("PHONE")
@@ -66,6 +66,14 @@ func TestVerify(t *testing.T) {
 	success, err := sms.VerifyCode(id, code, key, secret)
 
 	fmt.Println(success)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+}
+
+func TestPost(t *testing.T) {
+	client := sms.New(key, secret)
+	err := client.SendMessage("Test test test", phone)
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
