@@ -48,7 +48,7 @@ func res(statusCode int, data interface{}, message string, omitKeys, selectKeys 
 	result.Data = data
 	result.IsOk = statusCode < 300 && statusCode >= 200
 	bytes, _ := marshal(result, omitKeys, selectKeys)
-
+	selectKeys = append(selectKeys, "isOk", "message", "data")
 	return statusCode, "application/json", bytes
 }
 
