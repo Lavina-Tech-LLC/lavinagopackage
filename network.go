@@ -3,6 +3,7 @@ package lvn
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"io/ioutil"
 
 	"github.com/gin-gonic/gin"
@@ -50,7 +51,11 @@ func res(statusCode int, data interface{}, message string, omitKeys, selectKeys 
 	if len(selectKeys) != 0 {
 		selectKeys = append(selectKeys, "isOk", "message", "data")
 	}
-	bytes, _ := marshal(result, omitKeys, selectKeys)
+	bytes, err := marshal(result, omitKeys, selectKeys)
+	if err != nil {
+		fmt.Printf("lvn.res marshall error: %s", err.Error())
+	}
+
 	return statusCode, "application/json", bytes
 }
 
